@@ -1,0 +1,86 @@
+package com.iit847.customfont;
+
+
+import org.anddev.andengine.engine.Engine;
+import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.engine.options.EngineOptions;
+import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
+import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.background.ColorBackground;
+import org.anddev.andengine.entity.text.ChangeableText;
+import org.anddev.andengine.entity.text.Text;
+import org.anddev.andengine.opengl.font.Font;
+import org.anddev.andengine.opengl.font.FontFactory;
+import org.anddev.andengine.opengl.texture.TextureOptions;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.ui.activity.BaseGameActivity;
+
+import android.graphics.Color;
+
+public class MainActivity extends BaseGameActivity {
+	
+	
+	private static final int CAMERA_WIDTH = 480;
+	private static final int CAMERA_HEIGHT = 720;
+	
+	protected Camera mCamera;
+	private Scene mScene;
+
+	
+	private BitmapTextureAtlas mFontAtlas;
+	private TextureRegion mFontTextureRegion;
+	private Font mFont;
+	
+	private Text mText;
+	private ChangeableText mChangeableText;
+	
+	@Override
+	public Engine onLoadEngine() {
+		// TODO Auto-generated method stub
+		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+		return new Engine(new EngineOptions(true, ScreenOrientation.PORTRAIT, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera));
+	}
+
+	@Override
+	public void onLoadResources() {
+		// TODO Auto-generated method stub
+		FontFactory.setAssetBasePath("font/");
+		
+		this.mFontAtlas = new BitmapTextureAtlas(256, 256, TextureOptions.DEFAULT);
+		this.mFont = FontFactory.createFromAsset(this.mFontAtlas, this, "Droid.ttf", 20, true, Color.WHITE);
+		this.mEngine.getTextureManager().loadTextures(this.mFontAtlas);
+		this.mEngine.getFontManager().loadFont(this.mFont);
+		
+		
+	}
+
+	@Override
+	public Scene onLoadScene() {
+		// TODO Auto-generated method stub
+		this.mScene = new Scene();
+		this.mScene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
+
+		// this is Text i.e not upgradable
+
+		this.mScene.attachChild(new Text(0, 0, mFont, "Hello World"));
+		
+		// this is ChangeableText i.e  upgradable
+		//this.mChangeableText = new ChangeableText(200, 250, mFont, "Hell");
+		//this.mScene.attachChild(this.mChangeableText);
+		//this.mChangeableText.setText("Reza The Boss");
+		
+		
+		
+		
+		return this.mScene;
+	}
+
+	@Override
+	public void onLoadComplete() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
